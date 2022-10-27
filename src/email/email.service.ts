@@ -24,23 +24,23 @@ export class EmailService {
             Data: 'AWS SES with Nest.js Hello World!',
           },
         },
-        Source: `${this.#encodeBase64SenderName(senderName)} <${sender}>`,
+        Source: `${this.encodeBase64SenderName(senderName)} <${sender}>`,
       }),
     );
     return result;
   }
 
-  #encodeBase64SenderName = (data: string) => `=?UTF-8?B?${Buffer.from(data).toString('base64')}?=`;
+  private encodeBase64SenderName = (data: string) => `=?UTF-8?B?${Buffer.from(data).toString('base64')}?=`;
 
-  createSesClient() {
+  private createSesClient() {
     console.log(this.config);
 
     return new SESClient({
-      // credentials: {
-      //   accessKeyId: this.config.awsCredentials.accessKeyId,
-      //   secretAccessKey: this.config.awsCredentials.secretAccessKey,
-      // },
-      // region: this.config.awsRegion,
+      credentials: {
+        accessKeyId: this.config.awsCredentials.accessKeyId,
+        secretAccessKey: this.config.awsCredentials.secretAccessKey,
+      },
+      region: this.config.awsRegion,
     });
   }
 }
